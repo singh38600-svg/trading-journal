@@ -106,7 +106,7 @@ def sync_from_fyers():
                     "pnl": 0,
                     "fees": 0,
                     "status": "FILLED",
-                    "trade_time": datetime.fromtimestamp(t.get("orderDateTime", 0)).isoformat() if t.get("orderDateTime") else datetime.now().isoformat(),
+                    "trade_time": datetime.now().isoformat(),
                 }
                 db.table("trades").insert(row).execute()
                 inserted_trades += 1
