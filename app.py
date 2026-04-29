@@ -285,6 +285,89 @@ def fetch_positions():
     except Exception:
         return pd.DataFrame()
 
+def sync_history_from_fyers():
+    """Pull last few days of FILLED orders from Fyers orderbook API.
+    Combines with tradebook for fill prices, FIFO-pairs to compute P&L.
+    Auto-clears recent rows to avoid duplicates."""
+    if not fyers or not db: return 0, "Not connected"
+    try:
+        ob = fyers.orderbook()
+        if ob.get("s") != "ok":
+            return 0, ob.get("message", "Orderbook fetch failed")
+
+        orders = ob.get("orderBook", []) or []
+        # Keep only filled/partially-filled
+        filled = [o for o in orders if o.get("status") in (2, 6) or str(o.get("status","")).lower() in ("filled","traded","complete")]
+
+        if not filled:
+            return 0, "No filled orders found in last 7 days"
+
+        # Sort by time
+        def _ts(o):
+            v = o.get("orderDateTime") or o.get("orderNumStatus") or 0
+            try: return float(v)
+            except: return 0
+        filled.sort(key=_ts)
+
+        # FIFO pairing
+        queues = {}
+        rows = []
+        for o in filled:
+            sym = o.get("symbol")
+            side = "BUY" if o.get("side") == 1 else "SELL"
+            qty = abs(float(o.get("filledQty", o.get("qty", 0)) or 0))
+            price = float(o.get("tradedPrice", o.get("limitPrice", 0)) or 0)
+            if qty == 0 or not sym or price == 0:
+                continue
+            queues.setdefault(sym, [])
+            pnl = 0.0
+
+            if not queues[sym] or queues[sym][0][2] == side:
+                queues[sym].append([qty, price, side])
+            else:
+                remaining = qty
+                while remaining > 0 and queues[sym]:
+                    oq, op, os_ = queues[sym][0]
+                    m = min(remaining, oq)
+                    if os_ == "BUY":
+                        pnl += (price - op) * m
+                    else:
+                        pnl += (op - price) * m
+                    remaining -= m
+                    queues[sym][0][0] -= m
+                    if queues[sym][0][0] <= 0:
+                        queues[sym].pop(0)
+                if remaining > 0:
+                    queues[sym].append([remaining, price, side])
+
+            ts_val = o.get("orderDateTime") or 0
+            try:
+                ts_val = float(ts_val)
+                trade_time = datetime.fromtimestamp(ts_val).isoformat() if ts_val > 0 else datetime.now().isoformat()
+            except Exception:
+                trade_time = datetime.now().isoformat()
+
+            rows.append({
+                "symbol": sym, "side": side,
+                "quantity": qty, "entry_price": price,
+                "pnl": pnl, "fees": 0, "status": "FILLED",
+                "trade_time": trade_time,
+            })
+
+        # Wipe recent to be idempotent (last 8 days)
+        cutoff = (datetime.now() - timedelta(days=8)).date().isoformat()
+        try:
+            db.table("trades").delete().gte("trade_time", cutoff).execute()
+        except Exception:
+            pass
+
+        for i in range(0, len(rows), 100):
+            db.table("trades").insert(rows[i:i+100]).execute()
+
+        return len(rows), None
+    except Exception as e:
+        return 0, str(e)
+
 def sync_from_fyers():
     """Pull today's fills from Fyers, FIFO-pair them by symbol to compute P&L,
     upsert positions. Idempotent: clears today's rows before re-inserting."""
@@ -380,14 +463,27 @@ def sync_from_fyers():
 # ════════════════════════════════════════════════════════════════
 # QUANT METRICS
 # ════════════════════════════════════════════════════════════════
+def _empty_metrics(n=0):
+    return {
+        "total_pnl": 0, "gross_profit": 0, "gross_loss": 0,
+        "trades": n, "wins": 0, "losses": 0, "win_rate": 0,
+        "avg_win": 0, "avg_loss": 0, "largest_win": 0, "largest_loss": 0,
+        "profit_factor": 0, "payoff": 0, "expectancy": 0, "avg_trade": 0,
+        "max_dd": 0, "max_dd_pct": 0,
+        "sharpe": 0, "sortino": 0, "calmar": 0, "recovery": 0,
+        "max_streak_w": 0, "max_streak_l": 0, "kelly": 0,
+        "equity_curve": pd.DataFrame(columns=["trade_time", "cum_pnl"]),
+        "drawdown_curve": pd.DataFrame(columns=["trade_time", "dd"]),
+    }
+
 def compute_metrics(df):
     if df.empty or "pnl" not in df.columns:
-        return {}
+        return _empty_metrics()
     df = df.copy()
     df["pnl"] = pd.to_numeric(df["pnl"], errors="coerce").fillna(0)
     closed = df[df["pnl"] != 0].sort_values("trade_time").reset_index(drop=True)
     if closed.empty:
-        return {"total_pnl": 0, "trades": len(df), "wins": 0, "losses": 0, "win_rate": 0}
+        return _empty_metrics(n=len(df))
 
     wins = closed[closed["pnl"] > 0]
     losses = closed[closed["pnl"] < 0]
@@ -484,6 +580,15 @@ with st.sidebar:
                 st.error(err)
             else:
                 st.success(f"{t} fills · {p} positions")
+                st.cache_data.clear()
+
+    if st.button("⟲  PULL LAST 7 DAYS", use_container_width=True):
+        with st.spinner("Pulling history from Fyers..."):
+            n, err = sync_history_from_fyers()
+            if err:
+                st.error(err)
+            else:
+                st.success(f"{n} historical fills imported")
                 st.cache_data.clear()
 
     st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
