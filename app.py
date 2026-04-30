@@ -239,19 +239,33 @@ st.markdown("""
 # ════════════════════════════════════════════════════════════════
 # CONNECTIONS
 # ════════════════════════════════════════════════════════════════
-SUPABASE_URL = st.secrets.get("SUPABASE_URL", os.getenv("SUPABASE_URL", ""))
-SUPABASE_KEY = st.secrets.get("SUPABASE_KEY", os.getenv("SUPABASE_KEY", ""))
-FYERS_APP_ID = st.secrets.get("FYERS_APP_ID", os.getenv("FYERS_APP_ID", ""))
-FYERS_TOKEN = st.secrets.get("FYERS_ACCESS_TOKEN", os.getenv("FYERS_ACCESS_TOKEN", ""))
+def _secret(key):
+    try:
+        v = st.secrets.get(key, "")
+        return v or os.getenv(key, "")
+    except Exception:
+        return os.getenv(key, "")
+
+SUPABASE_URL = _secret("SUPABASE_URL")
+SUPABASE_KEY = _secret("SUPABASE_KEY")
+FYERS_APP_ID = _secret("FYERS_APP_ID")
+FYERS_TOKEN  = _secret("FYERS_ACCESS_TOKEN")
 
 def get_db():
-    if not SUPABASE_URL or not SUPABASE_KEY: return None
-    return create_client(SUPABASE_URL, SUPABASE_KEY)
+    url = _secret("SUPABASE_URL")
+    key = _secret("SUPABASE_KEY")
+    if not url or not key: return None
+    try:
+        return create_client(url, key)
+    except Exception:
+        return None
 
 def get_fyers():
-    if not FYERS_APP_ID or not FYERS_TOKEN: return None
+    app_id = _secret("FYERS_APP_ID")
+    token  = _secret("FYERS_ACCESS_TOKEN")
+    if not app_id or not token: return None
     try:
-        return fyersModel.FyersModel(client_id=FYERS_APP_ID, token=FYERS_TOKEN, is_async=False)
+        return fyersModel.FyersModel(client_id=app_id, token=token, is_async=False)
     except Exception:
         return None
 
