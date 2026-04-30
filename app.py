@@ -263,10 +263,12 @@ db = get_db()
 fyers = get_fyers()
 
 # ── DEBUG (remove after fixing) ──────────────────────────────────
-with st.sidebar.expander("🔍 Debug", expanded=False):
-    st.write(f"APP_ID set: `{bool(FYERS_APP_ID)}` → `{FYERS_APP_ID}`")
-    st.write(f"TOKEN set: `{bool(FYERS_TOKEN)}` → `{FYERS_TOKEN[:20] + '...' if FYERS_TOKEN else 'EMPTY'}`")
-    st.write(f"fyers object: `{fyers}`")
+st.warning(f"""
+**DEBUG**
+- APP_ID: `{FYERS_APP_ID or 'EMPTY'}`
+- TOKEN: `{'SET (' + FYERS_TOKEN[:15] + '...)' if FYERS_TOKEN else 'EMPTY'}`
+- fyers object: `{type(fyers).__name__}`
+""")
 
 # ════════════════════════════════════════════════════════════════
 # DATA LAYER
