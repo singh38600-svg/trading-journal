@@ -252,10 +252,21 @@ def get_db():
 @st.cache_resource
 def get_fyers():
     if not FYERS_APP_ID or not FYERS_TOKEN: return None
-    return fyersModel.FyersModel(client_id=FYERS_APP_ID, token=FYERS_TOKEN, is_async=False)
+    try:
+        f = fyersModel.FyersModel(client_id=FYERS_APP_ID, token=FYERS_TOKEN, is_async=False)
+        return f
+    except Exception as e:
+        st.sidebar.error(f"Fyers init error: {e}")
+        return None
 
 db = get_db()
 fyers = get_fyers()
+
+# ── DEBUG (remove after fixing) ──────────────────────────────────
+with st.sidebar.expander("🔍 Debug", expanded=False):
+    st.write(f"APP_ID set: `{bool(FYERS_APP_ID)}` → `{FYERS_APP_ID}`")
+    st.write(f"TOKEN set: `{bool(FYERS_TOKEN)}` → `{FYERS_TOKEN[:20] + '...' if FYERS_TOKEN else 'EMPTY'}`")
+    st.write(f"fyers object: `{fyers}`")
 
 # ════════════════════════════════════════════════════════════════
 # DATA LAYER
