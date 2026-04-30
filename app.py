@@ -244,31 +244,19 @@ SUPABASE_KEY = st.secrets.get("SUPABASE_KEY", os.getenv("SUPABASE_KEY", ""))
 FYERS_APP_ID = st.secrets.get("FYERS_APP_ID", os.getenv("FYERS_APP_ID", ""))
 FYERS_TOKEN = st.secrets.get("FYERS_ACCESS_TOKEN", os.getenv("FYERS_ACCESS_TOKEN", ""))
 
-@st.cache_resource
 def get_db():
     if not SUPABASE_URL or not SUPABASE_KEY: return None
     return create_client(SUPABASE_URL, SUPABASE_KEY)
 
-@st.cache_resource
 def get_fyers():
     if not FYERS_APP_ID or not FYERS_TOKEN: return None
     try:
-        f = fyersModel.FyersModel(client_id=FYERS_APP_ID, token=FYERS_TOKEN, is_async=False)
-        return f
-    except Exception as e:
-        st.sidebar.error(f"Fyers init error: {e}")
+        return fyersModel.FyersModel(client_id=FYERS_APP_ID, token=FYERS_TOKEN, is_async=False)
+    except Exception:
         return None
 
 db = get_db()
 fyers = get_fyers()
-
-# ── DEBUG (remove after fixing) ──────────────────────────────────
-st.warning(f"""
-**DEBUG**
-- APP_ID: `{FYERS_APP_ID or 'EMPTY'}`
-- TOKEN: `{'SET (' + FYERS_TOKEN[:15] + '...)' if FYERS_TOKEN else 'EMPTY'}`
-- fyers object: `{type(fyers).__name__}`
-""")
 
 # ════════════════════════════════════════════════════════════════
 # DATA LAYER
