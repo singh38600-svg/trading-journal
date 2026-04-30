@@ -4,3 +4,6 @@ plotly
 supabase
 fyers-apiv3
 python-dateutil
+yfinance
+ccxt
+numpy
