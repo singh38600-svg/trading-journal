@@ -1,0 +1,549 @@
+/* ============================================================
+   ZENORA HIRE – WORLD CLASS ANIMATIONS  v1.0.0
+   ============================================================ */
+
+/* ── Custom Properties ── */
+:root {
+  --z-primary:   #0a66c2;
+  --z-accent:    #00c9a7;
+  --z-dark:      #0d1117;
+  --z-light:     #f8faff;
+  --z-white:     #ffffff;
+  --z-ease:      cubic-bezier(0.4, 0, 0.2, 1);
+  --z-duration:  0.6s;
+}
+
+/* ── Page Loader ── */
+#zenora-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: var(--z-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s var(--z-ease), visibility 0.6s;
+}
+#zenora-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.zenora-loader-ring {
+  width: 64px;
+  height: 64px;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top-color: var(--z-accent);
+  border-radius: 50%;
+  animation: zenora-spin 0.9s linear infinite;
+}
+.zenora-loader-logo {
+  position: absolute;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--z-white);
+  letter-spacing: 0.05em;
+}
+@keyframes zenora-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Custom Cursor ── */
+#zenora-cursor {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--z-accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--z-ease),
+              height 0.3s var(--z-ease),
+              border-color 0.3s var(--z-ease),
+              background 0.3s var(--z-ease);
+  mix-blend-mode: difference;
+}
+#zenora-cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--z-accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s;
+}
+body:has(a:hover) #zenora-cursor,
+body:has(button:hover) #zenora-cursor {
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 201, 167, 0.1);
+}
+
+/* ── Particle Hero ── */
+.zenora-particle-hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0d1117 0%, #1a237e 60%, #0a66c2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#zenora-particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.zenora-particle-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--z-white);
+  padding: 2rem;
+}
+
+/* ── Typewriter ── */
+.zenora-typewriter {
+  display: inline-block;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--z-accent);
+  min-height: 1.2em;
+}
+.zenora-typewriter-cursor {
+  display: inline-block;
+  width: 3px;
+  background: var(--z-accent);
+  margin-left: 2px;
+  animation: zenora-blink 0.7s step-end infinite;
+  vertical-align: middle;
+  height: 1em;
+}
+@keyframes zenora-blink {
+  50% { opacity: 0; }
+}
+
+/* ── Counters ── */
+.zenora-counter-wrap {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+.zenora-counter {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--z-primary), var(--z-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.zenora-counter-label {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Marquee / Ticker ── */
+.zenora-marquee-outer {
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--z-primary), var(--z-accent));
+  padding: 0.85rem 0;
+  width: 100%;
+}
+.zenora-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: zenora-marquee 28s linear infinite;
+}
+.zenora-marquee-outer:hover .zenora-marquee-track {
+  animation-play-state: paused;
+}
+.zenora-marquee-item {
+  color: var(--z-white);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0 2rem;
+}
+.zenora-dot {
+  font-style: normal;
+  opacity: 0.5;
+  margin-left: 2rem;
+}
+@keyframes zenora-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Tilt Cards ── */
+.zenora-tilt-card {
+  background: var(--z-white);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(10, 102, 194, 0.1);
+  padding: 2rem;
+  transform-style: preserve-3d;
+  transition: box-shadow 0.4s var(--z-ease);
+  will-change: transform;
+}
+.zenora-tilt-card:hover {
+  box-shadow: 0 20px 60px rgba(10, 102, 194, 0.2);
+}
+
+/* ── Scroll Reveal Defaults ── */
+[data-aos] {
+  pointer-events: none;
+}
+[data-aos].aos-animate {
+  pointer-events: auto;
+}
+
+/* ── Floating Elements (background decorations) ── */
+.zenora-floater {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.07;
+  animation: zenora-float 6s ease-in-out infinite;
+  background: var(--z-accent);
+  pointer-events: none;
+}
+.zenora-floater:nth-child(2) { animation-delay: -2s; }
+.zenora-floater:nth-child(3) { animation-delay: -4s; }
+@keyframes zenora-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-30px) scale(1.05); }
+}
+
+/* ── Animated Gradient Text ── */
+.zenora-gradient-text {
+  background: linear-gradient(270deg, var(--z-primary), var(--z-accent), var(--z-primary));
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: zenora-gradient-shift 5s ease infinite;
+}
+@keyframes zenora-gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Pulse CTA Button ── */
+.zenora-pulse-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(135deg, var(--z-primary), var(--z-accent));
+  color: var(--z-white) !important;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none !important;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s var(--z-ease), box-shadow 0.3s var(--z-ease);
+}
+.zenora-pulse-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: zenora-pulse-ring 2.4s ease-out infinite;
+  z-index: -1;
+}
+.zenora-pulse-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.3s;
+}
+.zenora-pulse-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 40px rgba(10, 102, 194, 0.45);
+}
+.zenora-pulse-btn:hover::after {
+  background: rgba(255,255,255,0.08);
+}
+@keyframes zenora-pulse-ring {
+  0%   { transform: scale(1);    opacity: 0.6; }
+  70%  { transform: scale(1.18); opacity: 0;   }
+  100% { transform: scale(1.18); opacity: 0;   }
+}
+
+/* ── Section Entrance Helpers ── */
+.zenora-reveal-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.7s var(--z-ease), transform 0.7s var(--z-ease);
+}
+.zenora-reveal-up.zenora-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.zenora-reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.7s var(--z-ease), transform 0.7s var(--z-ease);
+}
+.zenora-reveal-left.zenora-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.zenora-reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.7s var(--z-ease), transform 0.7s var(--z-ease);
+}
+.zenora-reveal-right.zenora-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Stagger children (add to parent) ── */
+.zenora-stagger > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s var(--z-ease), transform 0.5s var(--z-ease);
+}
+.zenora-stagger.zenora-visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: none; }
+.zenora-stagger.zenora-visible > *:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: none; }
+.zenora-stagger.zenora-visible > *:nth-child(3) { transition-delay: 0.25s; opacity: 1; transform: none; }
+.zenora-stagger.zenora-visible > *:nth-child(4) { transition-delay: 0.35s; opacity: 1; transform: none; }
+.zenora-stagger.zenora-visible > *:nth-child(5) { transition-delay: 0.45s; opacity: 1; transform: none; }
+.zenora-stagger.zenora-visible > *:nth-child(6) { transition-delay: 0.55s; opacity: 1; transform: none; }
+
+/* ── Parallax container ── */
+.zenora-parallax {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+/* ── Morphing Background Blobs ── */
+.zenora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  animation: zenora-morph 12s ease-in-out infinite alternate;
+}
+.zenora-blob-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, var(--z-primary), transparent);
+  top: -100px; left: -150px;
+}
+.zenora-blob-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--z-accent), transparent);
+  bottom: -80px; right: -100px;
+  animation-delay: -6s;
+}
+@keyframes zenora-morph {
+  0%   { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  100% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+}
+
+/* ── Hover Lift for Cards ── */
+.zenora-hover-lift {
+  transition: transform 0.35s var(--z-ease), box-shadow 0.35s var(--z-ease);
+}
+.zenora-hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px rgba(10,102,194,0.18);
+}
+
+/* ── Image Zoom on Hover ── */
+.zenora-img-zoom {
+  overflow: hidden;
+  border-radius: 12px;
+}
+.zenora-img-zoom img {
+  transition: transform 0.6s var(--z-ease);
+  display: block;
+  width: 100%;
+}
+.zenora-img-zoom:hover img {
+  transform: scale(1.08);
+}
+
+/* ── Progress / Skill Bars ── */
+.zenora-skill-bar {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.zenora-skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--z-primary), var(--z-accent));
+  border-radius: inherit;
+  width: 0%;
+  transition: width 1.4s var(--z-ease);
+}
+
+/* ── Timeline ── */
+.zenora-timeline {
+  position: relative;
+  padding-left: 2.5rem;
+}
+.zenora-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.6rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--z-primary), var(--z-accent));
+}
+.zenora-timeline-item {
+  position: relative;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s var(--z-ease), transform 0.5s var(--z-ease);
+}
+.zenora-timeline-item.zenora-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.zenora-timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2.1rem;
+  top: 0.3rem;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--z-accent);
+  box-shadow: 0 0 0 4px rgba(0,201,167,0.2);
+}
+
+/* ── Glassmorphism Cards ── */
+.zenora-glass {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 16px;
+  transition: background 0.3s var(--z-ease), box-shadow 0.3s var(--z-ease);
+}
+.zenora-glass:hover {
+  background: rgba(255,255,255,0.16);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+}
+
+/* ── Ripple Effect ── */
+.zenora-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.zenora-ripple-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transform: scale(0);
+  animation: zenora-ripple-anim 0.6s linear;
+  pointer-events: none;
+}
+@keyframes zenora-ripple-anim {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ── Scroll Progress Bar ── */
+#zenora-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--z-primary), var(--z-accent));
+  width: 0%;
+  z-index: 99997;
+  transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ── Back to Top Button ── */
+#zenora-back-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--z-primary), var(--z-accent));
+  color: var(--z-white);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s var(--z-ease), transform 0.3s var(--z-ease);
+  box-shadow: 0 6px 24px rgba(10,102,194,0.35);
+}
+#zenora-back-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+#zenora-back-top:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(10,102,194,0.5);
+}
+
+/* ── Navigation Link Underline Slide ── */
+nav a, .nav-link, .menu-item a {
+  position: relative;
+  text-decoration: none !important;
+}
+nav a::after, .nav-link::after, .menu-item a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--z-primary), var(--z-accent));
+  transition: width 0.35s var(--z-ease);
+}
+nav a:hover::after,
+.nav-link:hover::after,
+.menu-item a:hover::after {
+  width: 100%;
+}
+
+/* ── Animated Section Divider ── */
+.zenora-wave-divider svg {
+  display: block;
+  width: 100%;
+}
+.zenora-wave-divider path {
+  animation: zenora-wave 4s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes zenora-wave {
+  0%, 100% { d: path("M0,96L60,112C120,128,240,160,360,154.7C480,149,600,107,720,96C840,85,960,107,1080,112C1200,117,1320,107,1380,101.3L1440,96L1440,320L0,320Z"); }
+  50%       { d: path("M0,128L60,112C120,96,240,64,360,80C480,96,600,160,720,160C840,160,960,96,1080,80C1200,64,1320,96,1380,112L1440,128L1440,320L0,320Z"); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  #zenora-cursor, #zenora-cursor-dot { display: none; }
+  .zenora-typewriter { font-size: clamp(1.5rem, 7vw, 2.5rem); }
+}
