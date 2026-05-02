@@ -1,4 +1,6 @@
 import Cursor from "@/components/Cursor";
+import ScrollProgress from "@/components/ScrollProgress";
+import MeshGradient from "@/components/MeshGradient";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import MarqueeBanner from "@/components/MarqueeBanner";
@@ -14,8 +16,10 @@ export default function Home() {
   return (
     <>
       <Cursor />
+      <ScrollProgress />
+      <MeshGradient />
       <Navbar />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <MarqueeBanner />
         <Services />
