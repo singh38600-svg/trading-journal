@@ -8,7 +8,7 @@ const navLinks = [
   { label: "Services", href: "#services" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "Industries", href: "#industries" },
-  { label: "About", href: "#about" },
+  { label: "Roles We Close", href: "#roles" },
   { label: "Testimonials", href: "#testimonials" },
 ];
 
@@ -60,17 +60,18 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <a href="#contact" className="text-sm text-[#9CA3AF] hover:text-white transition-colors px-4 py-2 font-medium">
-              Log in
+            <a href="/contact" className="text-sm text-[#9CA3AF] hover:text-white transition-colors px-4 py-2 font-medium">
+              Contact
             </a>
             <a
-              href="#contact"
+              href="https://calendly.com/zenorahire"
+              target="_blank"
+              rel="noopener noreferrer"
               className="relative group overflow-hidden text-sm font-semibold px-5 py-2.5 rounded-full text-black transition-all duration-300"
               style={{ background: "linear-gradient(135deg, #C9A84C, #F5D080, #C9A84C)", backgroundSize: "200% 100%" }}
             >
-              <span className="relative z-10">Get Started</span>
+              <span className="relative z-10">Book a Call</span>
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
             </a>
           </div>

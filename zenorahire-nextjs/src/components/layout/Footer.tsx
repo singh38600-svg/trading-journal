@@ -1,31 +1,49 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Link2, ExternalLink, Mail, Globe } from "lucide-react";
+import { Mail, Globe, MapPin, ExternalLink } from "lucide-react";
 
 const links = {
-  Services: ["Executive Search", "Board Advisory", "Contingency", "Talent Strategy", "Global Mobility", "Interim"],
-  Industries: ["Financial Services", "Technology", "Private Equity", "Life Sciences", "Professional Services", "Consumer"],
-  Company: ["About Us", "Our Team", "Case Studies", "Press & Media", "Careers at ZH", "Contact"],
-  Resources: ["Salary Guides", "Hiring Insights", "Leadership Blog", "Market Reports", "Candidate Hub", "ESG Toolkit"],
+  Services: [
+    "Permanent Hiring",
+    "Contract Staffing",
+    "Executive Search",
+    "AI-Powered Sourcing",
+    "Technical Screening",
+    "RPO / Embedded",
+  ],
+  Industries: [
+    "SaaS Startups",
+    "Fintech",
+    "HealthTech",
+    "EdTech",
+    "US / UK GCCs",
+    "E-commerce",
+  ],
+  Company: [
+    "About Us",
+    "How It Works",
+    "Roles We Close",
+    "Contact Us",
+    "Careers",
+    "Privacy Policy",
+  ],
 };
 
 const socials = [
-  { icon: Link2, href: "#", label: "LinkedIn" },
-  { icon: ExternalLink, href: "#", label: "X / Twitter" },
-  { icon: Mail, href: "mailto:hello@zenorahire.com", label: "Email" },
-  { icon: Globe, href: "#", label: "Website" },
+  { icon: ExternalLink, href: "https://linkedin.com/company/zenora-hire", label: "LinkedIn" },
+  { icon: Mail, href: "mailto:contact@zenorahire.com", label: "Email" },
+  { icon: Globe, href: "https://zenorahire.com", label: "Website" },
 ];
 
 export default function Footer() {
   return (
     <footer className="bg-[#040810] border-t border-[rgba(201,168,76,0.08)]">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        {/* Top row */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-14">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-14">
           {/* Brand col */}
-          <div className="col-span-2 md:col-span-3 lg:col-span-2">
-            <a href="#" className="flex items-center gap-2.5 mb-4">
+          <div className="col-span-2 lg:col-span-2">
+            <a href="/" className="flex items-center gap-2.5 mb-4">
               <div className="w-9 h-9 rounded-lg flex items-center justify-center"
                 style={{ background: "linear-gradient(135deg, #C9A84C, #A07A2E)" }}
               >
@@ -35,29 +53,32 @@ export default function Footer() {
                 Zenora<span className="gradient-text font-bold">Hire</span>
               </span>
             </a>
-            <p className="text-sm text-[#4B5563] leading-relaxed mb-6 max-w-xs">
-              The premium executive search and talent advisory firm trusted by the world's most ambitious organisations.
+            <p className="text-sm text-[#4B5563] leading-relaxed mb-5 max-w-xs">
+              AI-powered tech recruitment for SaaS companies. Roles closed in 14 days. Pay only when you hire.
             </p>
-            <div className="flex gap-2.5 mb-6">
+
+            <div className="flex items-center gap-1.5 text-sm text-[#4B5563] mb-4">
+              <MapPin size={13} className="text-[#C9A84C] shrink-0" />
+              Jaipur, Rajasthan, India
+            </div>
+            <div className="flex items-center gap-1.5 text-sm mb-6">
+              <Mail size={13} className="text-[#C9A84C] shrink-0" />
+              <a href="mailto:contact@zenorahire.com"
+                className="text-[#4B5563] hover:text-[#C9A84C] transition-colors"
+              >
+                contact@zenorahire.com
+              </a>
+            </div>
+
+            <div className="flex gap-2.5">
               {socials.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
+                <a key={label} href={href} aria-label={label}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel="noopener noreferrer"
                   className="w-9 h-9 rounded-full glass-light border border-[rgba(201,168,76,0.1)] flex items-center justify-center text-[#6B7280] hover:text-[#C9A84C] hover:border-[rgba(201,168,76,0.3)] transition-all duration-200"
                 >
                   <Icon size={14} />
                 </a>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {["London", "New York", "Singapore", "Dubai"].map((city) => (
-                <span key={city}
-                  className="text-[11px] px-2.5 py-1 rounded-full font-medium"
-                  style={{ background: "rgba(201,168,76,0.06)", color: "#6B7280" }}
-                >
-                  {city}
-                </span>
               ))}
             </div>
           </div>
@@ -69,9 +90,7 @@ export default function Footer() {
               <ul className="space-y-2.5">
                 {items.map((item) => (
                   <li key={item}>
-                    <a href="#"
-                      className="text-sm text-[#4B5563] hover:text-[#9CA3AF] transition-colors duration-200"
-                    >
+                    <a href="#" className="text-sm text-[#4B5563] hover:text-[#9CA3AF] transition-colors duration-200">
                       {item}
                     </a>
                   </li>
@@ -81,13 +100,13 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Divider */}
+        {/* Bottom */}
         <div className="border-t border-[rgba(201,168,76,0.06)] pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#374151]">
-            © 2026 ZenoraHire Ltd. All rights reserved. Registered in England & Wales No. 07234891.
+            © {new Date().getFullYear()} Zenora Hire. All rights reserved. · Jaipur, India
           </p>
           <div className="flex flex-wrap items-center gap-6">
-            {["Privacy Policy", "Terms of Service", "Cookie Policy", "Modern Slavery Act"].map((item) => (
+            {["Privacy Policy", "Terms of Service", "Refund Policy"].map((item) => (
               <a key={item} href="#" className="text-xs text-[#374151] hover:text-[#6B7280] transition-colors">
                 {item}
               </a>

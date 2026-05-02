@@ -5,9 +5,8 @@ import LogoBar from "@/components/sections/LogoBar";
 import Services from "@/components/sections/Services";
 import HowItWorks from "@/components/sections/HowItWorks";
 import Industries from "@/components/sections/Industries";
-import FeaturedJobs from "@/components/sections/FeaturedJobs";
+import RolesWeClose from "@/components/sections/RolesWeClose";
 import Testimonials from "@/components/sections/Testimonials";
-import About from "@/components/sections/About";
 import CTA from "@/components/sections/CTA";
 
 export default function Home() {
@@ -19,9 +18,10 @@ export default function Home() {
       <Services />
       <HowItWorks />
       <Industries />
-      <FeaturedJobs />
+      <div id="roles">
+        <RolesWeClose />
+      </div>
       <Testimonials />
-      <About />
       <CTA />
       <Footer />
     </main>

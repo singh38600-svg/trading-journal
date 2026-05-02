@@ -15,13 +15,40 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "ZenoraHire — Premium Executive Recruitment",
-  description: "ZenoraHire connects visionary companies with exceptional talent. World-class executive search and recruitment consulting for leading organisations.",
-  keywords: "executive recruitment, talent acquisition, headhunting, leadership hiring, ZenoraHire",
+  title: "Zenora Hire | AI-Powered Tech Recruitment | Roles Closed in 14 Days",
+  description:
+    "We help SaaS companies close mid-to-senior developer roles in 14 days using AI sourcing and human screening. Pay only when you hire. Based in Jaipur, India.",
+  keywords: [
+    "tech recruitment India",
+    "developer hiring",
+    "AI recruitment",
+    "SaaS hiring",
+    "engineering recruiter Jaipur",
+    "Zenora Hire",
+    "14 day hiring",
+    "RPO India",
+  ],
+  authors: [{ name: "Zenora Hire", url: "https://zenorahire.com" }],
   openGraph: {
-    title: "ZenoraHire — Premium Executive Recruitment",
-    description: "Connecting visionary companies with exceptional talent.",
     type: "website",
+    url: "https://zenorahire.com",
+    title: "Zenora Hire | AI-Powered Tech Recruitment | Roles Closed in 14 Days",
+    description:
+      "We help SaaS companies close mid-to-senior developer roles in 14 days using AI sourcing and human screening. Pay only when you hire.",
+    siteName: "Zenora Hire",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zenora Hire | AI-Powered Tech Recruitment",
+    description: "Close your next tech hire in 14 days. AI sourcing + human screening. Pay only on hire.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  alternates: {
+    canonical: "https://zenorahire.com",
   },
 };
 

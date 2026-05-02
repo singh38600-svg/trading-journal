@@ -1,49 +1,49 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, Users, Briefcase, TrendingUp, Globe, Zap } from "lucide-react";
+import { UserCheck, Clock, Search, Zap, ClipboardList, Users } from "lucide-react";
 
 const services = [
   {
-    icon: Search,
-    title: "Executive Search",
-    description: "Precision-targeted headhunting for C-suite and senior leadership positions. We identify passive candidates others cannot reach.",
+    icon: UserCheck,
+    title: "Permanent Hiring",
+    description: "Mid-to-senior developers (3–10 yrs) for full-time roles. From job brief to offer letter — handled end to end.",
     tag: "Most Popular",
     accent: true,
   },
   {
-    icon: Users,
-    title: "Board Advisory",
-    description: "Strategic board composition consulting to ensure governance excellence and diversity of thought at the highest level.",
+    icon: Clock,
+    title: "Contract Staffing",
+    description: "Short-term and project-based engineers deployed in days. Flexible contracts, zero overhead for your team.",
     tag: null,
     accent: false,
   },
   {
-    icon: Briefcase,
-    title: "Contingency Recruitment",
-    description: "Performance-driven hiring for mid to senior-level roles with no upfront fees. Pay only on successful placement.",
-    tag: null,
-    accent: false,
-  },
-  {
-    icon: TrendingUp,
-    title: "Talent Strategy",
-    description: "Bespoke workforce planning and talent pipeline development to future-proof your organisation's leadership.",
-    tag: null,
-    accent: false,
-  },
-  {
-    icon: Globe,
-    title: "Global Mobility",
-    description: "Cross-border executive relocations with cultural onboarding, visa support, and international market intelligence.",
+    icon: Search,
+    title: "Executive Search",
+    description: "CTO, VP Engineering, Engineering Manager — senior leaders who can build and scale your tech organisation.",
     tag: null,
     accent: false,
   },
   {
     icon: Zap,
-    title: "Interim Leadership",
-    description: "Rapid deployment of battle-tested interim executives and transformation leaders for critical transitions.",
-    tag: "Fast Track",
+    title: "AI-Powered Sourcing",
+    description: "Boolean + AI tools surface 100+ matched candidates overnight. You wake up to a warm, ranked pipeline.",
+    tag: "Fastest",
+    accent: false,
+  },
+  {
+    icon: ClipboardList,
+    title: "Technical Screening",
+    description: "Custom question banks, structured rubrics, and detailed submission notes so your team only meets the best.",
+    tag: null,
+    accent: false,
+  },
+  {
+    icon: Users,
+    title: "RPO / Embedded Recruiting",
+    description: "We act as your in-house talent team — embedded in your Slack, using your ATS, owning your hiring velocity.",
+    tag: null,
     accent: false,
   },
 ];
@@ -61,14 +61,12 @@ const cardVariants = {
 export default function Services() {
   return (
     <section id="services" className="py-24 md:py-32 bg-[#060B18] relative overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-8 pointer-events-none"
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(ellipse, rgba(201,168,76,0.08) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Section Header */}
         <div className="text-center mb-16 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -86,11 +84,11 @@ export default function Services() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-5xl font-bold text-white mb-4"
-            style={{ fontFamily: 'var(--font-playfair)' }}
+            style={{ fontFamily: "var(--font-playfair)" }}
           >
-            Recruitment Solutions
+            Recruitment Built for
             <br />
-            <span className="gradient-text">Built for Excellence</span>
+            <span className="gradient-text">Tech Teams That Move Fast</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -99,11 +97,10 @@ export default function Services() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-[#9CA3AF] max-w-xl mx-auto text-lg"
           >
-            From boardroom to breakout talent, our services span every level of your organisation.
+            Whether you need one senior engineer or an entire team, we have a model that fits.
           </motion.p>
         </div>
 
-        {/* Services Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -118,11 +115,7 @@ export default function Services() {
                 key={service.title}
                 variants={cardVariants}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className={`group relative p-7 rounded-2xl cursor-pointer transition-all duration-300 ${
-                  service.accent
-                    ? "glow-gold"
-                    : ""
-                } gradient-border`}
+                className={`group relative p-7 rounded-2xl cursor-pointer transition-all duration-300 ${service.accent ? "glow-gold" : ""} gradient-border`}
                 style={{
                   background: service.accent
                     ? "linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(14,21,37,0.9) 60%)"
@@ -136,27 +129,25 @@ export default function Services() {
                     {service.tag}
                   </div>
                 )}
-
                 <div className="mb-5">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors duration-300 ${
                     service.accent ? "bg-gradient-to-br from-[#C9A84C] to-[#A07A2E]" : "bg-[rgba(201,168,76,0.1)] group-hover:bg-[rgba(201,168,76,0.15)]"
                   }`}>
                     <Icon size={22} className={service.accent ? "text-black" : "text-[#C9A84C]"} />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>
+                  <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: "var(--font-playfair)" }}>
                     {service.title}
                   </h3>
                   <p className="text-[#6B7280] text-sm leading-relaxed group-hover:text-[#9CA3AF] transition-colors">
                     {service.description}
                   </p>
                 </div>
-
-                <div className="flex items-center gap-1 text-[#C9A84C] text-sm font-semibold group-hover:gap-2 transition-all">
-                  Learn more
+                <a href="/contact" className="flex items-center gap-1 text-[#C9A84C] text-sm font-semibold group-hover:gap-2 transition-all">
+                  Get started
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                     <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                </div>
+                </a>
               </motion.div>
             );
           })}
