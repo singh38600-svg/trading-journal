@@ -260,6 +260,23 @@ def get_db():
     except Exception:
         return None
 
+@st.cache_data(ttl=60)
+def _check_db_alive():
+    """Returns (ok: bool, error_msg: str|None). Cached 60s to avoid per-rerun overhead."""
+    url = _secret("SUPABASE_URL")
+    key = _secret("SUPABASE_KEY")
+    if not url or not key:
+        return False, "Supabase credentials not configured"
+    try:
+        client = create_client(url, key)
+        client.table("trades").select("id").limit(1).execute()
+        return True, None
+    except Exception as e:
+        msg = str(e)
+        if "getaddrinfo" in msg or "Name or service not known" in msg or "11001" in msg or "11004" in msg:
+            return False, "dns"
+        return False, msg
+
 def get_fyers():
     app_id = _secret("FYERS_APP_ID")
     token  = _secret("FYERS_ACCESS_TOKEN")
@@ -288,7 +305,16 @@ def fetch_trades():
                     df[c] = pd.to_numeric(df[c], errors="coerce").fillna(0)
         return df
     except Exception as e:
-        st.error(f"Database error: {e}")
+        msg = str(e)
+        if "getaddrinfo" in msg or "Name or service not known" in msg or "11001" in msg or "11004" in msg:
+            st.error(
+                "**Cannot reach the database** — DNS lookup failed for your Supabase project.\n\n"
+                "This usually means your Supabase project is **paused** (free tier pauses after ~1 week of inactivity). "
+                "Go to [supabase.com/dashboard](https://supabase.com/dashboard), open your project, and click **Restore**. "
+                "The app will reconnect automatically once the project is active again."
+            )
+        else:
+            st.error(f"Database error: {e}")
         return pd.DataFrame()
 
 @st.cache_data(ttl=30)
@@ -609,7 +635,13 @@ with st.sidebar:
     st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
     st.markdown("<h3>Connections</h3>", unsafe_allow_html=True)
 
-    db_pill = '<span class="pill pill-on"><span class="pill-dot"></span>online</span>' if db else '<span class="pill pill-off"><span class="pill-dot"></span>offline</span>'
+    db_alive, db_err = _check_db_alive()
+    if db_alive:
+        db_pill = '<span class="pill pill-on"><span class="pill-dot"></span>online</span>'
+    elif db_err == "dns":
+        db_pill = '<span class="pill pill-off"><span class="pill-dot"></span>paused</span>'
+    else:
+        db_pill = '<span class="pill pill-off"><span class="pill-dot"></span>offline</span>'
     fy_pill = '<span class="pill pill-on"><span class="pill-dot"></span>online</span>' if fyers else '<span class="pill pill-off"><span class="pill-dot"></span>offline</span>'
     st.markdown(f"<div style='display:flex; justify-content:space-between; padding:6px 0;'><span class='text-muted'>Database</span>{db_pill}</div>", unsafe_allow_html=True)
     st.markdown(f"<div style='display:flex; justify-content:space-between; padding:6px 0;'><span class='text-muted'>Broker</span>{fy_pill}</div>", unsafe_allow_html=True)
