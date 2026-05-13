@@ -5,3 +5,10 @@ __pycache__/
 venv/
 .env
 *.log
+
+# Node.js
+node_modules/
+server/node_modules/
+server/opencode.json
+dist/
+out/
